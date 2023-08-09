@@ -17,7 +17,7 @@ model User {
     phone            String     @unique
     password         String
     passwordChangeAt DateTime?
-    image            String     @default("https://res.cloudinary.com/dw0cormzj/image/upload/v1679430518/Youth%20Welfare/Student/profile_dteqac.jpg")
+    image            String    @default("https://res.cloudinary.com/dw0cormzj/image/upload/v1679430518/Youth%20Welfare/Student/profile_dteqac.jpg")
     cloudinary_id    String     @default("default")
     role             Role     @default(user)
     Isverified       Boolean    @default(false)

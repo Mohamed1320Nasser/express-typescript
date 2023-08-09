@@ -3,8 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import errorHandler from './middleware/error.middleware';
-// import { allRequires } from "./src/utils";
-// import { PrismaClient } from "@prisma/client";
+import { allRequires } from './routes';
 
 dotenv.config({ path: './config/.env' });
 const port = process.env.PORT || 4000;
@@ -21,7 +20,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     bodyParser.json()(req, res, next);
   }
 });
-app.use(errorHandler)
+allRequires(app);
+app.use(errorHandler);
 // allRequires(app, prisma);
 
 app.listen(port, () => {

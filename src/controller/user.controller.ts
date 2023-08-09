@@ -21,3 +21,13 @@ export const create = catchAsyncError(
     res.status(200).json({ message: 'success to add user' });
   },
 );
+
+export const deleteUser = catchAsyncError(
+  async (req: Request, res: Response) => {
+    const  id = req.params.id;
+    await prisma.user.delete({
+      where: { id: parseInt(id) },
+    });
+    res.status(200).json({ message: 'success to delete user' });
+  },
+);

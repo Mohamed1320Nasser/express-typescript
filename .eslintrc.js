@@ -35,5 +35,6 @@ module.exports = {
         "no-var":"error",
         "prefer-const" :"error",
         "prettier/prettier":1
+        //  "no-any": false
     }
 }

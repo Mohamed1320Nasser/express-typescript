@@ -1,9 +1,9 @@
 import express from 'express';
 import morgan from 'morgan';
-import AppError from '../helpers/ApiError';
+import AppError from '../utils/ApiError';
 
 import userRoutes from './api/user.routes';
-import auth from '../auth/auth.routes';
+import auth from './api/auth.routes';
 
 export const allRequires = (app: express.Application) => {
   // Determine if development or production is enabled

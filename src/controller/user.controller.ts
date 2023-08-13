@@ -1,33 +1,72 @@
 import { NextFunction, Request, Response } from 'express';
-import { catchAsyncError } from '../helpers/catchAsyncError';
-
-import { PrismaClient } from '@prisma/client';
-import AppError from '../helpers/ApiError';
-const prisma = new PrismaClient();
-
-export const create = catchAsyncError(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const existingUser = await prisma.user.findUnique({
-      where: { email: req.body.email },
-    });
-
-    if (existingUser) {
-      return next(new AppError('User is already exists', 401));
+import response from '../utils/respons';
+import userService from '../services/user.service';
+class UserController {
+  async addUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = await userService.AddUser(req.body);
+      response(res, 201, {
+        status: true,
+        message: 'Account created successfully!',
+        data: user,
+      });
+    } catch (error) {
+      next(error);
     }
+  }
 
-    await prisma.user.create({
-      data: req.body,
-    });
-    res.status(200).json({ message: 'success to add user' });
-  },
-);
+  async deleteUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await userService.deleteUser(Number(id));
+      response(res, 200, {
+        status: true,
+        message: ' User Deleted successful!',
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const user = await userService.UpdateUser(req.body, Number(id));
+      response(res, 200, {
+        status: true,
+        message: 'update User successful!',
+        data: user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const user = await userService.getUser(Number(id));
 
-export const deleteUser = catchAsyncError(
-  async (req: Request, res: Response) => {
-    const  id = req.params.id;
-    await prisma.user.delete({
-      where: { id: parseInt(id) },
-    });
-    res.status(200).json({ message: 'success to delete user' });
-  },
-);
+      response(res, 200, {
+        status: true,
+        message: 'get User successful!',
+        data: user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const users = await userService.getUsers();
+
+      response(res, 200, {
+        status: true,
+        message: 'get Users successful!',
+        data: users,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+const userController = new UserController();
+export default userController;

@@ -1,3 +1,6 @@
+process.on('uncaughtException', (err) => {
+  console.log('uncaughtException', err.stack);
+});
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -22,7 +25,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 allRequires(app);
 app.use(errorHandler);
-// allRequires(app, prisma);
+
+// Handle rejection outside express
+process.on('unhandledRejection', (err) => {
+  console.log('unhandledRejection', err);
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);

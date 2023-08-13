@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 import AppError from '../utils/ApiError';
@@ -39,7 +39,11 @@ export const protectedRoutes = catchAsyncError(
 export const allowedTo = (...roles: string[]) => {
   return catchAsyncError(
     async (req: CustomRequest, res: Response, next: NextFunction) => {
-      if (!roles.includes(req.user.role || '')) {
+      if (!req.user) {
+        return next(new AppError('User not authenticated', 401));
+      }
+
+      if (!roles.includes(req.user.role)) {
         return next(new AppError("You don't have permission to do this", 401));
       }
       next();

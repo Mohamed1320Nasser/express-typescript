@@ -1,8 +1,9 @@
 import { Router } from 'express';
 
 import { allowedTo, protectedRoutes } from '../../middleware/auth.middleware';
-import categoryController from '../../controller/category.controller';
+
 import { checkImageUpload, uploadSingleImage } from '../../middleware/multer';
+import brandController from '../../controller/brand.controller';
 
 const routes = Router();
 routes.post(
@@ -11,19 +12,19 @@ routes.post(
   allowedTo('admin'),
   uploadSingleImage('image'),
   checkImageUpload,
-  categoryController.addCategory,
+  brandController.addBrand,
 );
 routes.get(
   '/',
   protectedRoutes,
   allowedTo('admin'),
-  categoryController.getCategories,
+  brandController.getCategories,
 );
 routes.delete(
   '/:id',
   protectedRoutes,
   allowedTo('admin'),
-  categoryController.deleteCategory,
+  brandController.deleteBrand,
 );
 routes.put(
   '/:id',
@@ -31,13 +32,13 @@ routes.put(
   allowedTo('admin'),
   uploadSingleImage('image'),
   checkImageUpload,
-  categoryController.updateCategory,
+  brandController.updateBrand,
 );
 routes.get(
   '/id',
   protectedRoutes,
   allowedTo('admin'),
-  categoryController.getCategory,
+  brandController.getBrand,
 );
 
 export default routes;

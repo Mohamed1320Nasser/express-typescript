@@ -5,6 +5,7 @@ import AppError from '../utils/ApiError';
 import userRoutes from './api/user.routes';
 import auth from './api/auth.routes';
 import categoryRoutes from './api/category.routes';
+import brandRoutes from './api/brand.routes';
 
 export const allRequires = (app: express.Application) => {
   // Determine if development or production is enabled
@@ -15,6 +16,7 @@ export const allRequires = (app: express.Application) => {
   app.use('/api/v1/users', userRoutes);
   app.use('/api/v1/auth', auth);
   app.use('/api/v1/categories', categoryRoutes);
+  app.use('/api/v1/brands', brandRoutes);
 
   // Requires
   app.all('*', (req, res, next) => {
